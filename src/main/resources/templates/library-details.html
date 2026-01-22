@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<div th:replace="~{fragments/navbar}"></div>
+<main class="container">
+    <hgroup>
+        <h1>Библиотека</h1>
+        <p>Адрес, расписание и описание выбранной библиотеки.</p>
+    </hgroup>
+    <article class="card">
+        <div class="grid">
+            <div>
+                <h2 th:text="${libraryDetails.name}"></h2>
+                <p><strong>Адрес:</strong> <span th:text="${libraryDetails.address}"></span></p>
+                <p><strong>Часы работы:</strong> <span class="pill" th:text="${libraryDetails.workingHours}"></span></p>
+                <p><strong>Описание:</strong> <span th:text="${libraryDetails.description}"></span></p>
+                <div sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/libraries/library-delete/{library-name}(library-name=${libraryDetails.name})}"
+                       role="button"
+                       class="secondary"
+                       onclick="return confirm('Удалить библиотеку?')">
+                        Удалить библиотеку
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

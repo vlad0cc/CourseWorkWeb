@@ -1,0 +1,25 @@
+<nav xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <ul>
+            <li><strong><a href="/" style="text-decoration: none;">Городская библиотека</a></strong></li>
+        </ul>
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="/libraries/all">Библиотеки</a></li>
+            <li><a href="/books/all">Книги</a></li>
+            <li sec:authorize="hasRole('USER')"><a href="/books/my-loans">Мои книги</a></li>
+            <li sec:authorize="hasAnyRole('ADMIN','MODERATOR')"><a href="/books/active-loans">Выдачи</a></li>
+            <li sec:authorize="hasAnyRole('ADMIN','MODERATOR')"><a href="/staff/loans">Поиск читателя</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a href="/libraries/add">Добавить библиотеку</a></li>
+            <li sec:authorize="hasAnyRole('ADMIN','MODERATOR')"><a href="/books/add">Добавить книгу</a></li>
+            <li sec:authorize="isAuthenticated()"><a href="/users/profile" role="button" class="secondary outline">Личный кабинет</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <form th:method="post" th:action="@{/users/logout}" style="margin: 0;">
+                    <button type="submit" class="contrast outline">Выйти</button>
+                </form>
+            </li>
+            <li sec:authorize="!isAuthenticated()"><a href="/users/register" role="button">Регистрация</a></li>
+            <li sec:authorize="!isAuthenticated()"><a href="/users/login" role="button" class="secondary">Войти</a></li>
+        </ul>
+    </div>
+</nav>

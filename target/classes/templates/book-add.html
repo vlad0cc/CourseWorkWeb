@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <article style="max-width: 800px; margin: 0 auto;">
+        <hgroup>
+            <h1>Добавить книгу</h1>
+            <p>Заполните информацию о книге и выберите библиотеку.</p>
+        </hgroup>
+        <form th:action="@{/books/add}"
+              th:method="post"
+              th:object="${bookModel}">
+
+            <div class="grid">
+                <label for="title">
+                    Название
+                    <input th:field="*{title}"
+                           th:errorclass="is-invalid"
+                           type="text"
+                           id="title"
+                           placeholder="Название книги"
+                           required/>
+                    <small th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></small>
+                </label>
+
+                <label for="author">
+                    Автор
+                    <input th:field="*{author}"
+                           th:errorclass="is-invalid"
+                           type="text"
+                           id="author"
+                           placeholder="Фамилия и имя автора"
+                           required/>
+                    <small th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="text-danger"></small>
+                </label>
+            </div>
+
+            <fieldset>
+                <legend>Жанр</legend>
+                <label>
+                    <input th:field="*{genre}" th:value="FICTION" type="radio" name="genre"/>
+                    Художественная
+                </label>
+                <label>
+                    <input th:field="*{genre}" th:value="NON_FICTION" type="radio" name="genre"/>
+                    Нон-фикшн
+                </label>
+                <label>
+                    <input th:field="*{genre}" th:value="SCIENCE" type="radio" name="genre"/>
+                    Научная
+                </label>
+                <label>
+                    <input th:field="*{genre}" th:value="HISTORY" type="radio" name="genre"/>
+                    История
+                </label>
+                <label>
+                    <input th:field="*{genre}" th:value="CHILDREN" type="radio" name="genre"/>
+                    Детская
+                </label>
+                <small th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="text-danger"></small>
+            </fieldset>
+
+            <label for="library">
+                Библиотека
+                <select id="library" th:field="*{libraryName}" required>
+                    <option value="">Выберите библиотеку...</option>
+                    <option th:each="l : ${availableLibraries}"
+                            th:value="${l.name}"
+                            th:text="${l.name}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('libraryName')}" th:errors="*{libraryName}" class="text-danger"></small>
+            </label>
+
+            <div class="grid">
+                <label for="publishedOn">
+                    Дата публикации
+                    <input th:field="*{publishedOn}"
+                           th:errorclass="is-invalid"
+                           type="date"
+                           id="publishedOn"
+                           required/>
+                    <small th:if="${#fields.hasErrors('publishedOn')}" th:errors="*{publishedOn}" class="text-danger"></small>
+                </label>
+
+                <label for="isbn">
+                    ISBN
+                    <input th:field="*{isbn}"
+                           th:errorclass="is-invalid"
+                           type="text"
+                           id="isbn"
+                           placeholder="...-.-.....-...-."
+                           required/>
+                    <small th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}" class="text-danger"></small>
+                </label>
+            </div>
+
+            <div class="grid">
+                <label for="publisher">
+                    Издательство
+                    <input th:field="*{publisher}"
+                           th:errorclass="is-invalid"
+                           type="text"
+                           id="publisher"
+                           placeholder="Издательство"
+                           required/>
+                    <small th:if="${#fields.hasErrors('publisher')}" th:errors="*{publisher}" class="text-danger"></small>
+                </label>
+
+                <label for="printRun">
+                    Тираж
+                    <input th:field="*{printRun}"
+                           th:errorclass="is-invalid"
+                           type="number"
+                           min="1"
+                           id="printRun"
+                           placeholder="Количество экземпляров"
+                           required/>
+                    <small th:if="${#fields.hasErrors('printRun')}" th:errors="*{printRun}" class="text-danger"></small>
+                </label>
+
+                <label for="availableCopies">
+                    Доступно для выдачи
+                    <input th:field="*{availableCopies}"
+                           th:errorclass="is-invalid"
+                           type="number"
+                           min="0"
+                           id="availableCopies"
+                           placeholder="Сколько экземпляров доступно"
+                           required/>
+                    <small th:if="${#fields.hasErrors('availableCopies')}" th:errors="*{availableCopies}" class="text-danger"></small>
+                </label>
+            </div>
+
+            <button type="submit">Сохранить</button>
+        </form>
+    </article>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

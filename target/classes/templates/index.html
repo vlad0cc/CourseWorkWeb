@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+     <article class="text-center">
+         <hgroup>
+             <h1>Добро пожаловать в городскую библиотеку</h1>
+             <p>Онлайн каталог библиотек и книг: выбирайте филиал, бронируйте и читайте.</p>
+         </hgroup>
+         <p>
+             <small>Текущее время: <strong th:text="${#temporals.format(#temporals.createNow(), 'dd.MM.yyyy HH:mm:ss')}"></strong></small>
+         </p>
+         <div class="grid">
+             <a href="/libraries/all" role="button" class="secondary">Посмотреть библиотеки</a>
+             <a href="/books/all" role="button">Найти книгу</a>
+         </div>
+     </article>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

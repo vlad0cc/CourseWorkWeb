@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <hgroup>
+        <h1>Поиск читателя</h1>
+        <p>По номеру читательского билета (или ФИО). Доступно модераторам и администраторам.</p>
+    </hgroup>
+    <form method="get" action="/staff/loans">
+        <div class="grid">
+            <input type="search" name="q" th:value="${q}" placeholder="ФИО или номер билета" required/>
+            <button type="submit">Найти</button>
+        </div>
+    </form>
+    <div th:if="${errorMessage}" class="text-danger" th:text="${errorMessage}" style="margin-top:1rem;"></div>
+    <div th:if="${userLoans}">
+        <article class="card">
+            <h3 th:text="${userLoans.userFullName}"></h3>
+            <p><strong>Билет:</strong> <span th:text="${userLoans.readerCardNumber}"></span></p>
+        </article>
+
+        <section>
+            <h4>Активные выдачи</h4>
+            <div class="grid">
+                <div th:each="loan : ${userLoans.activeLoans}" class="card">
+                    <h5 th:text="${loan.bookTitle}"></h5>
+                    <p><strong>Автор:</strong> <span th:text="${loan.bookAuthor}"></span></p>
+                    <p><strong>ISBN:</strong> <span th:text="${loan.isbn}"></span></p>
+                    <p><strong>Выдана:</strong> <span th:text="${loan.startDate}"></span></p>
+                    <p><strong>Вернуть до:</strong> <span th:text="${loan.dueDate}"></span></p>
+                </div>
+            </div>
+            <p th:if="${#lists.isEmpty(userLoans.activeLoans)}"><em>Нет активных выдач.</em></p>
+        </section>
+
+        <section>
+            <h4>Прошлые выдачи</h4>
+            <div class="grid">
+                <div th:each="loan : ${userLoans.pastLoans}" class="card">
+                    <h5 th:text="${loan.bookTitle}"></h5>
+                    <p><strong>Автор:</strong> <span th:text="${loan.bookAuthor}"></span></p>
+                    <p><strong>ISBN:</strong> <span th:text="${loan.isbn}"></span></p>
+                    <p><strong>Выдана:</strong> <span th:text="${loan.startDate}"></span></p>
+                    <p><strong>Вернуть до:</strong> <span th:text="${loan.dueDate}"></span></p>
+                    <p><strong>Возвращена:</strong> <span th:text="${loan.returnedAt}"></span></p>
+                </div>
+            </div>
+            <p th:if="${#lists.isEmpty(userLoans.pastLoans)}"><em>Нет прошлых выдач.</em></p>
+        </section>
+    </div>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

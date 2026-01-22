@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <hgroup>
+        <h1>Библиотеки</h1>
+        <p>Выберите филиал и смотрите доступные книги.</p>
+    </hgroup>
+    
+    <div th:if="${successMessage}" style="padding: 1rem; margin-bottom: 1rem; background-color: var(--pico-ins-color); border-radius: var(--pico-border-radius);">
+        <p th:text="${successMessage}" style="margin: 0; color: white;"></p>
+    </div>
+    <div th:if="${errorMessage}" style="padding: 1rem; margin-bottom: 1rem; background-color: var(--pico-del-color); border-radius: var(--pico-border-radius);">
+        <p th:text="${errorMessage}" style="margin: 0; color: white;"></p>
+    </div>
+    
+    <form method="get" action="/libraries/all">
+        <div class="grid">
+            <input type="search" 
+                   name="search" 
+                   th:value="${search}"
+                   placeholder="Название, адрес или описание..."
+                   aria-label="Поиск">
+            <button type="submit">Искать</button>
+        </div>
+    </form>
+    
+    <div th:each="l : ${libraryInfos}" class="card">
+        <h3 th:text="${l.name}"></h3>
+        <p><strong>Адрес:</strong> <span th:text="${l.address}"></span></p>
+        <p><strong>Часы работы:</strong> <span class="pill" th:text="${l.workingHours}"></span></p>
+        <p><strong>Описание:</strong> <span th:text="${#strings.abbreviate(l.description, 150)}"></span></p>
+        <a th:href="@{/libraries/library-details/{library-name}(library-name=${l.name})}" role="button" class="outline">
+            Подробнее
+        </a>
+    </div>
+    
+    <nav th:if="${totalPages != null && totalPages > 1}" aria-label="Pagination">
+        <ul style="display: flex; justify-content: center; list-style: none; padding: 0;">
+            <li th:if="${currentPage > 0}">
+                <a th:href="@{/libraries/all(page=${currentPage - 1}, size=10)}" role="button" class="outline">Назад</a>
+            </li>
+            <li style="margin: 0 1rem; align-self: center;">
+                <span>Страница <strong th:text="${currentPage + 1}"></strong> из <strong th:text="${totalPages}"></strong></span>
+            </li>
+            <li th:if="${currentPage + 1 < totalPages}">
+                <a th:href="@{/libraries/all(page=${currentPage + 1}, size=10)}" role="button" class="outline">Вперёд</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <p th:if="${#lists.isEmpty(libraryInfos)}" class="text-center">
+        <em>Библиотеки не найдены. Попробуйте изменить запрос.</em>
+    </p>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

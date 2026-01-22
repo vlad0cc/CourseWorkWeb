@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <hgroup>
+        <h1>Мои книги</h1>
+        <p>Текущие выдачи и сроки возврата.</p>
+    </hgroup>
+    <div class="grid">
+        <div th:each="loan : ${loans}" class="card">
+            <h3 th:text="${loan.bookTitle}"></h3>
+            <p><strong>Автор:</strong> <span th:text="${loan.bookAuthor}"></span></p>
+            <p><strong>ISBN:</strong> <span th:text="${loan.isbn}"></span></p>
+            <p><strong>Выдана:</strong> <span th:text="${loan.startDate}"></span></p>
+            <p><strong>Вернуть до:</strong> <span th:text="${loan.dueDate}"></span></p>
+        </div>
+    </div>
+    <p th:if="${#lists.isEmpty(loans)}"><em>У вас нет активных книг.</em></p>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

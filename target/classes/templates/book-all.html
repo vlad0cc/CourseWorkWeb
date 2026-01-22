@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <hgroup>
+    <h1>Книги</h1>
+    <p>Каталог доступных книг.</p>
+    </hgroup>
+    <div class="grid">
+        <div th:each="e : ${allBooks}" class="card">
+            <h3 th:text="${e.title}"></h3>
+            <p><strong>Автор:</strong> <span th:text="${e.author}"></span></p>
+            <p><strong>Дата публикации:</strong> <span th:text="${e.publishedOn}"></span></p>
+            <p><strong>Доступно:</strong> <span th:text="${e.availableCopies}"></span></p>
+            <a th:href="@{/books/book-details/{id}(id=${e.id})}" 
+               role="button" 
+               class="outline">
+                Подробнее
+            </a>
+        </div>
+    </div>
+    <p th:if="${#lists.isEmpty(allBooks)}" class="text-center">
+        <em>Книг пока нет. Добавьте первую!</em>
+    </p>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

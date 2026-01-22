@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<div th:replace="~{fragments/navbar}"></div>
+<main class="container">
+  <hgroup>
+    <h1>Личный кабинет</h1>
+    <p>Ваши данные и настройки аккаунта.</p>
+  </hgroup>
+  <article class="card">
+    <div class="grid" th:object="${user}">
+      <div>
+        <h2 th:text="*{fullName}"></h2>
+        <p><strong>Логин:</strong> <span th:text="*{username}"></span></p>
+        <p><strong>Email:</strong> <span th:text="*{email}"></span></p>
+        <p sec:authorize="hasRole('USER')"><strong>Номер читательского билета:</strong> <span th:text="*{readerCardNumber}"></span></p>
+        <p><strong>Возраст:</strong> <span th:text="*{age}"></span></p>
+      </div>
+      <div class="text-center"></div>
+    </div>
+  </article>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

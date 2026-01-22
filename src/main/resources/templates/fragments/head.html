@@ -1,0 +1,23 @@
+<head th:fragment="head" xmlns:th="http://www.thymeleaf.org">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Городская библиотека</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    :root { color-scheme: dark; }
+    body { padding: 0; background: radial-gradient(circle at 20% 20%, #0f172a, #0b1120); color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; }
+    nav { padding: 1rem 0; }
+    main { padding: 2rem 0; min-height: 70vh; }
+    footer { margin-top: auto; padding: 1rem 0; text-align: center; border-top: 1px solid var(--pico-muted-border-color); }
+    .card { margin-bottom: 1rem; padding: 1.5rem; border: 1px solid var(--pico-muted-border-color); border-radius: var(--pico-border-radius); background: #111827; }
+    .text-center { text-align: center; }
+    .text-danger { color: var(--pico-del-color); }
+    .text-success { color: var(--pico-ins-color); }
+    .pill { display: inline-block; padding: 0.2rem 0.75rem; border-radius: 999px; background: var(--pico-muted-border-color); color: var(--pico-secondary); font-size: 0.85rem; }
+    a, h1, h2, h3, h4, h5, h6, p, label { color: #e2e8f0; }
+    input, select, textarea { background: #0b1224; color: #e2e8f0; border-color: var(--pico-muted-border-color); }
+    button { background: #2563eb; color: #f8fafc; }
+    button.secondary { background: #1f2937; }
+    [role="button"].outline, button.secondary { border-color: #2563eb; }
+  </style>
+</head>

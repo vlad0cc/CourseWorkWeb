@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<div th:replace="~{fragments/navbar}"></div>
+<main class="container">
+    <hgroup>
+        <h1>Активные выдачи</h1>
+        <p>Книги, которые сейчас находятся на руках у читателей.</p>
+    </hgroup>
+    <div th:if="${successMessage}" class="text-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="text-danger" th:text="${errorMessage}"></div>
+    <div class="grid">
+        <div th:each="loan : ${loans}" class="card">
+            <h3 th:text="${loan.bookTitle}"></h3>
+            <p><strong>Автор:</strong> <span th:text="${loan.bookAuthor}"></span></p>
+            <p><strong>ISBN:</strong> <span th:text="${loan.isbn}"></span></p>
+            <p><strong>Читатель:</strong> <span th:text="${loan.userFullName}"></span> (<span th:text="${loan.username}"></span>)</p>
+            <p><strong>Номер билета:</strong> <span th:text="${loan.readerCardNumber}"></span></p>
+            <p><strong>Дата выдачи:</strong> <span th:text="${loan.startDate}"></span></p>
+            <p><strong>Вернуть до:</strong> <span th:text="${loan.dueDate}"></span></p>
+            <form th:action="@{/books/return/{id}(id=${loan.loanId})}" th:method="post">
+                <input type="hidden" name="backTo" value="/books/active-loans"/>
+                <button type="submit" class="secondary">Отметить возврат</button>
+            </form>
+        </div>
+    </div>
+    <p th:if="${#lists.isEmpty(loans)}"><em>Активных выдач нет.</em></p>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<div th:replace="~{fragments/navbar}"></div>
+<main class="container">
+    <hgroup>
+        <h1>Детали книги</h1>
+        <p>Полная информация о выбранной книге.</p>
+    </hgroup>
+    <div th:if="${successMessage}" class="text-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="text-danger" th:text="${errorMessage}"></div>
+    <article class="card">
+        <div class="grid">
+            <div>
+                <h2 th:text="${bookDetails.title}"></h2>
+                <p><strong>Автор:</strong> <span th:text="${bookDetails.author}"></span></p>
+                <p><strong>Жанр:</strong> <span th:text="${bookDetails.genreLabel}"></span></p>
+                <p><strong>Дата публикации:</strong> <span th:text="${bookDetails.publishedOn}"></span></p>
+                <p><strong>ISBN:</strong> <span th:text="${bookDetails.isbn}"></span></p>
+                <p><strong>Издательство:</strong> <span th:text="${bookDetails.publisher}"></span></p>
+                <p><strong>Доступных экземпляров:</strong> <span th:text="${bookDetails.availableCopies}"></span></p>
+                <p><strong>Библиотека:</strong> <span th:text="${bookDetails.libraryName}"></span></p>
+                <div sec:authorize="hasRole('USER')">
+                    <form th:action="@{/books/borrow}" th:method="post">
+                        <input type="hidden" name="bookId" th:value="${bookDetails.id}"/>
+                        <label for="days">Срок выдачи (максимум 14 дней)</label>
+                        <input name="days" type="number" min="1" max="14" id="days" value="7" required/>
+                        <button type="submit" th:disabled="${bookDetails.availableCopies <= 0}">Взять книгу</button>
+                    </form>
+                    <p th:if="${bookDetails.availableCopies <= 0}" class="text-danger">Сейчас свободных экземпляров нет.</p>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <p>Чтобы взять книгу, нужно войти в аккаунт.</p>
+                </div>
+                <div sec:authorize="hasAnyRole('ADMIN','MODERATOR')" class="text-danger">
+                    <p>Администратор и модератор не могут брать книги себе.</p>
+                </div>
+                <div sec:authorize="hasAnyRole('ADMIN','MODERATOR')">
+                    <form th:action="@{/books/book-delete/{id}(id=${bookDetails.id})}"
+                          th:method="delete"
+                          onsubmit="return confirm('Удалить книгу?')">
+                        <button type="submit" class="secondary">Удалить книгу</button>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center">
+            </div>
+        </div>
+    </article>
+</main>
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>
